@@ -192,9 +192,35 @@ ADD CONSTRAINT exam_question_FK FOREIGN KEY() REFERENCES
 --***** INSERTING DATA INTO TABLE *****
 
 --1.ADD BRANCHES 
+INSERT INTO [academic].[BRANCHES]
+VALUES;
+        
 --2.ADD INTAKES 
+INSERT INTO [academic].[INTAKES]
+VALUES;
 --3.ADD TRACKS
+INSERT INTO [academic].[TRACKS]
+VALUES;
 --4.ADD STUDENT
+CREATE PROCEDURE AddStudent
+(
+@userId INT,
+@Fname VARCHAR(20),
+@Lname VARCHAR(20),
+@Email VARCHAR(255),
+@Password VARCHAR(255),
+@Role VARCHAR(255),
+@personalInfo VARCHAR(255),
+@Status VARCHAR(255)
+)
+AS
+BEGIN
+INSERT INTO auth.USERS(userId, Fname, Lname, Email, Password, Role)
+VALUES (@userId, @Fname, @Lname, @Email, @Password, @Role)
+
+INSERT INTO auth.STUDENTS(studentID, personalInfo, Status)
+VALUES (@userId, @personalInfo, @Status)
+END;
 --5.ADD INSTRUCTOR 
 --6.ADD MANAGER 
 --7.ADD QUESTIONS 

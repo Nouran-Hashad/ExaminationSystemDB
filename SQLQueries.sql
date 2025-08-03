@@ -1,9 +1,13 @@
 --***** CREATE DATABASE *****
 CREATE DATABASE ExaminationDB;
+go 
+USE ExaminationDB;
 --***** CREATE SCHEMAS *****
 --auth, academic, exams
 CREATE SCHEMA auth;
+go
 CREATE SCHEMA academic;
+go
 CREATE SCHEMA exams;
 --***** CREATE TABLES ******
 
@@ -18,6 +22,7 @@ Password VARCHAR(255) CHECK (LEN(password)>=8) NOT NULL,
 Role VARCHAR(255),
 lastLogin DATE DEFAULT GETDATE()
 );
+go
 --2.STUDENTS table
 CREATE TABLE auth.STUDENTS
 (
@@ -25,6 +30,7 @@ studentID INT PRIMARY KEY,
 personalInfo VARCHAR(255),
 Status VARCHAR(255)
 );
+go
 --3.INSTRUCTORS table
 CREATE TABLE auth.INSTRUCTORS
 (
@@ -33,11 +39,13 @@ Specilization VARCHAR(255),
 Qualifications VARCHAR(255),
 yearsOfExperience INT
 );
+go
 --4.MANGER table
 CREATE TABLE auth.training_manager
 (
 managerId INT PRIMARY KEY
 );
+go
 --5.BRANCHES table
 CREATE TABLE academic.BRANCHES
 (
@@ -45,6 +53,7 @@ branchId INT PRIMARY KEY,
 Name VARCHAR(255),
 Description VARCHAR(255)
 );
+go
 --6.INTAKES table
 CREATE TABLE academic.INTAKES 
 (
@@ -53,6 +62,7 @@ StartDate DATE,
 EndDATE DATE,
 TrackID INT 
 );
+go
 --7.TRACKS table
 CREATE TABLE academic.TRACKS
 (
@@ -61,6 +71,7 @@ Name VARCHAR(255),
 Description VARCHAR(255),
 BranchID INT
 );
+go
 --8.COURSES table
 CREATE TABLE academic.COURSES
 (
@@ -72,6 +83,7 @@ MinDegree INT,
 mng_id INT,
 intake_id INT
 );
+go
 --9.instr_intake_course table
 CREATE TABLE academic.instr_intake_course
 (
@@ -81,6 +93,7 @@ course_id INT,
 HireDate DATE,
 PRIMARY KEY(instructor_id,intake_id, course_id)
 );
+go
 --10.QUESTIONS table
 CREATE TABLE exams.QUESTIONS
 (
@@ -92,6 +105,7 @@ CorrectAnswer VARCHAR(255),
 BestAcceptedAnswer VARCHAR(255),
 course_id INT
 );
+go
 --11.Student_Answers table
 CREATE TABLE exams.student_answer
 (
@@ -99,6 +113,7 @@ StudentAnswerID INT PRIMARY KEY,
 student_id INT,
 question_id INT,
 );
+go
 --12.answer_options table
 CREATE TABLE exams.answer_options
 (
@@ -107,6 +122,7 @@ Content VARCHAR(225),
 IsCorrect CHAR(1),
 question_id INT
 );
+go
 --13.EXAMS table
 CREATE TABLE exams.EXAMS
 (
@@ -118,6 +134,7 @@ Type VARCHAR(30) DEFAULT 'exam',
 course_id INT,
 instructor_id INT
 );
+go
 --14.exam_questions table
 CREATE TABLE exams.exam_questions
 (
@@ -128,20 +145,49 @@ PRIMARY KEY(ExamID, QuestionID)
 
 --***** ADDING GOREIGN KEY CONSTRAINT TO TABLES *****
 
---1.USERS table
---2.STUDENTS table
+
+--1.STUDENTS table
+ALTER TABLE auth.STUDENTS
+ADD CONSTRAINT student_FK FOREIGN KEY(StudentID) REFERENCES auth.USERS(UserID);
 --3.INSTRUCTORS table
+ALTER TABLE auth.INSTRUCTORS
+ADD CONSTRAINT instructor_FK FOREIGN KEY(InstructorID) REFERENCES auth.USERS(UserID);
 --4.MANGER table
---5.BRANCHES table
+ALTER TABLE auth.training_manager
+ADD CONSTRAINT manager_FK FOREIGN KEY(ManagerID) REFERENCES auth.USERS(UserID);
 --6.INTAKES table
+ALTER TABLE academic.INTAKES
+ADD CONSTRAINT intake_FK FOREIGN KEY() REFERENCES;
 --7.TRACKS table
+ALTER TABLE academic.TRACKS
+ADD CONSTRAINT track_FK FOREIGN KEY() REFERENCES;
 --8.COURSES table
+ALTER TABLE academic.COURCES
+ADD CONSTRAINT track_FK1 FOREIGN KEY() REFERENCES
+    CONSTRAINT track_FK2 FOREIGN KEY() REFERENCES;
 --9.instr_intake_course table
+ALTER TABLE academic.instr_intake_course
+ADD CONSTRAINT track_FK1 FOREIGN KEY() REFERENCES
+    CONSTRAINT track_FK2 FOREIGN KEY() REFERENCES
+    CONSTRAINT track_FK3 FOREIGN KEY() REFERENCES;
 --10.QUESTIONS table
+ALTER TABLE exams.QUESTIONS
+ADD CONSTRAINT question_FK FOREIGN KEY() REFERENCES;
 --11.Student_Answers table
+ALTER TABLE exams.student_answers
+ADD CONSTRAINT Student_Answer_FK1 FOREIGN KEY() REFERENCES
+    CONSTRAINT Student_Answer_FK2 FOREIGN KEY() REFERENCES
+    CONSTRAINT Student_Answers_FK3 FOREIGN KEY() REFERENCES;
 --12.Answer_Options table
+ALTER TABLE exams.answer_options
+ADD CONSTRAINT Answer_Option_FK FOREIGN KEY() REFERENCES;
 --13.EXAMS table
+ALTER TABLE exams.Exams
+ADD CONSTRAINT exam_FK FOREIGN KEY() REFERENCES;
 --14.exam_questions table
+ALTER TABLE exams.exam_questions
+ADD CONSTRAINT exam_question_FK FOREIGN KEY() REFERENCES
+    CONSTRAINT exam_question_FK FOREIGN KEY() REFERENCES;
 
 --***** INSERTING DATA INTO TABLE *****
 
